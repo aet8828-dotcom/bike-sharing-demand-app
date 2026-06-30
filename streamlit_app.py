@@ -22,7 +22,14 @@ OUTPUT_DIR = Path("model_outputs")
  
 @st.cache_data
 def load_data():
-    return pd.read_csv(DATA_PATH)
+    data = pd.read_csv(DATA_PATH)
+    # In the UCI Bike Sharing dataset, season=1 is actually winter (Dec-Feb);
+    # the data dictionary is off by one season. Remap so Season_Name matches the
+    # real months (confirmed against the monthly demand pattern).
+    data["Season_Name"] = data["season"].map(
+        {1: "Winter", 2: "Spring", 3: "Summer", 4: "Fall"}
+    )
+    return data
  
  
 df = load_data()
@@ -299,7 +306,7 @@ both commuting and leisure trips contribute to demand throughout the week.
     st.plotly_chart(fig_season, use_container_width=True)
  
     st.markdown("""
-**Insight:** Demand is lowest in spring and higher during warmer seasons.
+**Insight:** Demand is lowest in winter and higher during warmer seasons.
 Comfortable outdoor conditions increase bike usage.
 """)
  
@@ -589,7 +596,7 @@ and high demand hours well.
         season = st.selectbox(
             "Season",
             [1, 2, 3, 4],
-            format_func=lambda x: {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}[x]
+            format_func=lambda x: {1: "Winter", 2: "Spring", 3: "Summer", 4: "Fall"}[x]
         )
         weathersit = st.selectbox(
             "Weather",
@@ -1090,3 +1097,4 @@ This app can help bike-sharing companies and cities better anticipate demand,
 improve bike availability, reduce car dependency, and support cleaner urban
 transportation.
 """)
+ 
