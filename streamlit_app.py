@@ -101,7 +101,15 @@ transportation.
         "cnt"
     ]
 
-    st.dataframe(df[preview_cols].head(), use_container_width=True)
+    st.dataframe(
+        df[preview_cols].head(),
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "temp": st.column_config.NumberColumn(format="%.2f"),
+            "hum": st.column_config.NumberColumn(format="%.2f"),
+        }
+    )
 
     st.markdown(
         "**Note:** The following variables were intentionally excluded to avoid data leakage."
@@ -193,7 +201,7 @@ non-linear demand spikes, outperforms Linear Regression on this data.
         x="hr",
         y="cnt",
         markers=True,
-        labels={"hr": "Hour of the Day", "cnt": "Average Bike Rentals"}
+        labels={"hr": "Hour of the Day", "cnt": "Average Hourly Rentals"}
     )
 
     fig_hour.update_layout(xaxis=dict(tickmode="linear", dtick=1))
@@ -220,7 +228,7 @@ for work or school transportation.
         monthly,
         x="Month",
         y="cnt",
-        labels={"Month": "Month", "cnt": "Average Bike Rentals"}
+        labels={"Month": "Month", "cnt": "Average Hourly Rentals"}
     )
 
     st.plotly_chart(fig_month, use_container_width=True)
@@ -249,7 +257,7 @@ around June through September. Warmer months make biking more comfortable and pr
         weekday,
         x="Weekday_Name",
         y="cnt",
-        labels={"Weekday_Name": "Weekday", "cnt": "Average Bike Rentals"}
+        labels={"Weekday_Name": "Weekday", "cnt": "Average Hourly Rentals"}
     )
 
     st.plotly_chart(fig_weekday, use_container_width=True)
@@ -275,7 +283,7 @@ both commuting and leisure trips contribute to demand throughout the week.
         season,
         x="Season_Name",
         y="cnt",
-        labels={"Season_Name": "Season", "cnt": "Average Bike Rentals"}
+        labels={"Season_Name": "Season", "cnt": "Average Hourly Rentals"}
     )
 
     st.plotly_chart(fig_season, use_container_width=True)
@@ -308,7 +316,7 @@ Comfortable outdoor conditions increase bike usage.
         y="cnt",
         labels={
             "Weather_Condition": "Weather Condition",
-            "cnt": "Average Bike Rentals"
+            "cnt": "Average Hourly Rentals"
         }
     )
 
@@ -346,7 +354,7 @@ during rain, snow, or uncomfortable weather.
         daytype_grouped,
         x="Day_Type",
         y="cnt",
-        labels={"Day_Type": "Day Type", "cnt": "Average Bike Rentals"},
+        labels={"Day_Type": "Day Type", "cnt": "Average Hourly Rentals"},
         color="Day_Type",
         color_discrete_sequence=["#3498db", "#2ecc71", "#e74c3c"]
     )
